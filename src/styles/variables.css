@@ -1,0 +1,10 @@
+:root {
+  --color-primary: #9d3e1d;
+  --color-primary-text: #ffffff;
+
+  --button-radius: 8px;
+  --button-font-weight: 600;
+  --button-font-size: 14px;
+  --button-line-height: 120%;
+  --button-letter-spacing: 0.05em;
+}

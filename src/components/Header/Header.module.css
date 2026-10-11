@@ -1,0 +1,219 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 4px 0;
+  height: 88px;
+  background: var(--color-header-bg);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-header);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 4px 24px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+.logo {
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 140%;
+  color: var(--color-primary);
+}
+
+.nav {
+  display: none;
+  align-items: center;
+  gap: 32px;
+}
+
+.navLink {
+  padding-bottom: 3px;
+  border-bottom: 2px solid transparent;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: 0.05em;
+  color: var(--color-text-body);
+}
+
+.navLinkActive {
+  border-bottom-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.cart {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 36px;
+  padding: 8px;
+  border-radius: var(--radius-badge);
+  color: var(--color-text-body);
+}
+
+.cartDot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 13px;
+  height: 13px;
+  border-radius: 100%;
+  background: var(--color-primary);
+}
+
+.authButtons {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.loginBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 95px;
+  height: 49px;
+  padding: 8px 24px;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-button);
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: 0.05em;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--color-primary);
+}
+
+.signupBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 121px;
+  height: 48px;
+  border-radius: var(--radius-button);
+  background: var(--color-primary);
+  box-shadow: var(--shadow-outline-btn);
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: 0.05em;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--color-text-white);
+}
+
+.account {
+  display: none;
+  align-items: center;
+  gap: 24px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-badge);
+  object-fit: cover;
+}
+
+.initials {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: 0.05em;
+  text-align: center;
+  color: var(--color-primary);
+}
+
+.burger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: var(--color-icon-burger);
+}
+
+.burgerOpen {
+  color: var(--color-icon-close);
+}
+
+.mobileMenu {
+  position: fixed;
+  top: 88px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 90;
+  background: var(--color-bg-page);
+  overflow-y: auto;
+}
+
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  padding: 32px 16px 160px;
+}
+
+.mobileNavLink {
+  padding-bottom: 3px;
+  border-bottom: 2px solid transparent;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: 0.03em;
+  color: var(--color-text-body);
+}
+
+.mobileNavLinkActive {
+  border-bottom-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+@media (min-width: 768px) {
+  .nav,
+  .authButtons,
+  .account {
+    display: flex;
+  }
+
+  .burger,
+  .mobileMenu {
+    display: none;
+  }
+}
+
+@media (min-width: 1440px) {
+  .header {
+    padding: 4px 80px;
+  }
+}

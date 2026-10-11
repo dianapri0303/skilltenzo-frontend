@@ -1,5 +1,6 @@
 import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
+import Header from "../components/Header/Header";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-family" });
 const montserrat = Montserrat({
@@ -15,7 +16,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${montserrat.variable}`}>
-      <body>{children}</body>
+      <body>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }

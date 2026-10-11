@@ -8,8 +8,11 @@
 
 body {
   font-family: var(--font-family);
-  color: #1a1a1a;
-  background-color: #ffffff;
+  font-weight: var(--body-font-weight);
+  font-size: var(--body-font-size);
+  line-height: var(--body-line-height);
+  color: var(--color-text-body);
+  background-color: var(--color-bg-page);
 }
 
 h1,
@@ -28,6 +31,7 @@ a {
 
 button {
   font-family: inherit;
+  color: inherit;
   cursor: pointer;
   border: none;
   background: none;

@@ -1,10 +1,90 @@
 :root {
+  /* ===== COLORS ===== */
   --color-primary: #9d3e1d;
-  --color-primary-text: #ffffff;
+  --color-primary-hover: #763119;
+  --color-primary-disabled: rgba(157, 62, 29, 0.2);
 
-  --button-radius: 8px;
+  --color-success: #4e644c;
+  --color-success-bg: rgba(206, 231, 200, 0.3);
+  --color-error: #ba1a1a;
+  --color-error-hover: #763119;
+  --color-error-disabled: rgba(186, 26, 26, 0.2);
+  --color-info: #5e5c55;
+  --color-info-bg: #e7e2d9;
+
+  --color-text-heading: #1b1c1c;
+  --color-text-body: #56423c;
+  --color-text-white: #ffffff;
+  --color-text-placeholder: #6b7280;
+
+  --color-bg-page: #fcf9f8;
+  --color-bg-page-alt: #ffffff;
+  --color-bg-section: #f6f3f2;
+  --color-bg-card-trending: #fcf9f8;
+  --color-bg-card-catalog: #ffffff;
+  --color-bg-input: #f6f3f2;
+
+  --color-border-input: #ddc0b8;
+  --color-border-error: #ba1a1a;
+  --color-border-footer: #ddc0b8;
+  --color-border-card-trending: rgba(221, 192, 184, 0.1);
+
+  --color-header-bg: rgba(252, 249, 248, 0.8);
+
+  --badge-beginner-bg: rgba(206, 231, 200, 0.9);
+  --badge-beginner-text: #526850;
+  --badge-intermediate-bg: rgba(189, 85, 51, 0.9);
+  --badge-intermediate-text: #fffbff;
+  --badge-advanced-bg: rgba(94, 92, 85, 0.9);
+  --badge-advanced-text: #ffffff;
+
+  --color-icon-burger: #000000;
+  --color-icon-close: #8a726b;
+
+  /* ===== SHADOWS ===== */
+  --shadow-card: 0 4px 20px 0 rgba(45, 45, 45, 0.04);
+  --shadow-header: 0 4px 20px 0 rgba(45, 45, 45, 0.04);
+  --shadow-outline-btn:
+    0 4px 6px -4px rgba(0, 0, 0, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  /* ===== RADIUS ===== */
+  --radius-button: 8px;
+  --radius-card: 12px;
+  --radius-badge: 9999px;
+
+  /* ===== TYPOGRAPHY ===== */
   --button-font-weight: 600;
   --button-font-size: 14px;
   --button-line-height: 120%;
   --button-letter-spacing: 0.05em;
+
+  --h1-font-size: 48px;
+  --h1-font-weight: 700;
+  --h1-line-height: 120%;
+  --h1-letter-spacing: -0.02em;
+
+  --h2-font-size: 32px;
+  --h2-font-weight: 600;
+  --h2-line-height: 130%;
+
+  --h3-font-size: 24px;
+  --h3-font-weight: 600;
+  --h3-line-height: 138%;
+
+  --body-font-size: 16px;
+  --body-font-weight: 400;
+  --body-line-height: 160%;
+
+  --meta-font-size: 14px;
+  --meta-font-weight: 600;
+  --meta-line-height: 120%;
+  --meta-letter-spacing: 0.05em;
+
+  --price-font-size: 24px;
+  --price-font-weight: 600;
+  --price-line-height: 140%;
+
+  /* ===== LAYOUT ===== */
+  --container-max-width: 1440px;
+  --section-padding-x: 80px;
 }

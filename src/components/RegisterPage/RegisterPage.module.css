@@ -1,0 +1,246 @@
+.page {
+  display: flex;
+  flex-direction: column;
+}
+
+.cover {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  width: 100%;
+  height: 634px;
+  padding: 48px;
+}
+
+.coverImage {
+  object-fit: cover;
+}
+
+.coverOverlay {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: 448px;
+}
+
+.coverTitle {
+  font-family: var(--second-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--color-text-white);
+}
+
+.coverBar {
+  width: 64px;
+  height: 4px;
+  margin-top: 24px;
+  border-radius: var(--radius-badge);
+  background: var(--color-cover-bar);
+}
+
+.coverSubtitle {
+  margin-top: 8px;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.formSide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--color-bg-page);
+}
+
+.formInner {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  width: 100%;
+  max-width: 480px;
+  padding: 80px 0;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  font-family: var(--second-family);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 130%;
+  color: var(--color-text-heading);
+}
+
+.subtitle {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--color-text-body);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 32px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--color-text-heading);
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  height: 49px;
+  padding: 14px 24px;
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-button);
+  background: var(--color-bg-input);
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--color-text-heading);
+}
+
+.input::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+.inputError {
+  border-color: var(--color-border-error);
+}
+
+.inputPassword {
+  padding-right: 58px;
+}
+
+.eyeButton {
+  position: absolute;
+  top: 50%;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  color: var(--color-icon-close);
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--color-error);
+}
+
+.errorIcon {
+  flex-shrink: 0;
+}
+
+.submitButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 48px;
+  border-radius: var(--radius-button);
+  background: var(--color-primary);
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  text-align: center;
+  color: var(--color-text-white);
+}
+
+.submitButton:disabled {
+  background: var(--color-primary-disabled);
+  cursor: not-allowed;
+}
+
+.switch {
+  padding-top: 48px;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  text-align: center;
+  color: var(--color-text-body);
+}
+
+.switchLink {
+  color: var(--color-primary);
+}
+
+.legal {
+  padding-top: 48px;
+  border-top: 1px solid var(--color-border-soft);
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 163%;
+  color: var(--color-text-body);
+}
+
+.legalLink {
+  color: var(--color-success);
+}
+
+@media (min-width: 768px) {
+  .cover {
+    height: 627px;
+  }
+
+  .coverImage {
+    object-position: center 30%;
+  }
+}
+
+@media (min-width: 1440px) {
+  .page {
+    flex-direction: row;
+  }
+
+  .cover {
+    flex-shrink: 0;
+    width: 720px;
+    height: auto;
+    min-height: 1161px;
+    padding: 80px;
+  }
+
+  .coverImage {
+    object-position: center;
+  }
+
+  .formSide {
+    flex: 1;
+  }
+}

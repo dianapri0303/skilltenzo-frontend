@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Icon from "../Icon/Icon";
+import { useAuth } from "../../context/AuthContext";
 import styles from "./Header.module.css";
 
 const publicLinks = [
@@ -23,7 +24,8 @@ function getInitials(name) {
     .join("");
 }
 
-export default function Header({ user = null, cartCount = 0 }) {
+export default function Header() {
+  const { user, cartCount } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 
@@ -66,13 +68,17 @@ export default function Header({ user = null, cartCount = 0 }) {
 
             {user ? (
               <div className={styles.account}>
-                <Image
-                  src={user.avatarUrl}
-                  alt=""
-                  width={40}
-                  height={40}
-                  className={styles.avatar}
-                />
+                {user.avatarUrl ? (
+                  <Image
+                    src={user.avatarUrl}
+                    alt=""
+                    width={40}
+                    height={40}
+                    className={styles.avatar}
+                  />
+                ) : (
+                  <span className={styles.avatarPlaceholder} />
+                )}
                 <span className={styles.initials}>
                   {getInitials(user.name)}
                 </span>

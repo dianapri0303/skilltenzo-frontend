@@ -141,6 +141,15 @@
   object-fit: cover;
 }
 
+.avatarPlaceholder {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-badge);
+  background: var(--color-bg-avatar);
+}
+
 .initials {
   font-family: var(--font-family);
   font-weight: 600;

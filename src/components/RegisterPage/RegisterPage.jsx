@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -33,9 +34,13 @@ const schema = yup.object({
 
 export default function RegisterPage() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const { register: registerUser } = useAuth();
+  const { register: registerUser, isLoggedIn, isLoading } = useAuth();
   const router = useRouter();
-
+  useEffect(() => {
+    if (!isLoading && isLoggedIn) {
+      router.replace("/");
+    }
+  }, [isLoading, isLoggedIn, router]);
   const {
     register,
     handleSubmit,

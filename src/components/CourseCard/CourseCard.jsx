@@ -67,7 +67,7 @@ export default function CourseCard({ course, variant = "home" }) {
           </span>
           <span className={styles.metaItem}>
             <Icon name="icon-users" width={17} height={12} />
-            {formatStudents(course.studentCount)}
+            {formatStudents(course.studentsCount)}
           </span>
         </div>
 

@@ -7,9 +7,11 @@ export default function ToastProvider() {
   return (
     <ToastContainer
       position="top-right"
-      sutoClose={4000}
-      hideProgressBarnewestOnTop
-      closeOnClickpauseOnHover
+      autoClose={4000}
+      hideProgressBar
+      newestOnTop
+      closeOnClick
+      pauseOnHover
       draggable={false}
     />
   );

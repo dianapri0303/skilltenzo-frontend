@@ -2,6 +2,7 @@ import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
+import ToastProvider from "@/components/ToastProvider/ToastProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-family" });
 const montserrat = Montserrat({
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
         <Header />
         {children}
         <Footer />
+        <ToastProvider />
       </body>
     </html>
   );

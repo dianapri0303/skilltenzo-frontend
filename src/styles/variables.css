@@ -43,6 +43,9 @@
   --color-accent-light: #cee7c8;
   --color-bg-avatar: #f0eded;
   --color-primary-soft: rgba(189, 85, 51, 0.1);
+  --color-cover-accent: #ffdbd0;
+  --color-cover-bar: #ffb59e;
+  --color-border-soft: rgba(221, 192, 184, 0.3);
   --color-text-black: #000000;
 
   /* ===== SHADOWS ===== */

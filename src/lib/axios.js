@@ -18,11 +18,16 @@ instance.interceptors.request.use((config) => {
 instance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 && typeof window !== "undefined") {
+    if (
+      error.response?.status === 401 &&
+      typeof window !== "undefined" &&
+      window.location.pathname !== "/login"
+    ) {
       localStorage.removeItem("token");
       // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.href = "/login";
     }
+
     return Promise.reject(error);
   },
 );

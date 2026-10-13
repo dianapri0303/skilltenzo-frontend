@@ -60,6 +60,15 @@
   --color-bg-avatar-dark: #77746d;
   --shadow-filters: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 
+  --color-icon-dark: #000000;
+  --color-success-dark: #4e644c;
+  --color-bg-success-soft: rgba(206, 231, 200, 0.5);
+  --color-bg-muted: #f0eded;
+  --color-border-card: rgba(221, 192, 184, 0.1);
+  --color-border-card-owned: rgba(78, 100, 76, 0.2);
+  --color-border-card-incart: rgba(157, 62, 29, 0.2);
+  --color-border-section: rgba(221, 192, 184, 0.2);
+
   /* ===== SHADOWS ===== */
   --shadow-card: 0 4px 20px 0 rgba(45, 45, 45, 0.04);
   --shadow-header: 0 4px 20px 0 rgba(45, 45, 45, 0.04);

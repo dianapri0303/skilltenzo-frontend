@@ -48,6 +48,18 @@
   --color-border-soft: rgba(221, 192, 184, 0.3);
   --color-text-black: #000000;
 
+  --color-bg-white: #ffffff;
+  --color-bg-filters: #f6f3f2;
+  --color-border-filters: rgba(221, 192, 184, 0.2);
+  --color-border-strong: #8a726b;
+  --color-border-muted: #ddc0b8;
+  --color-text-muted: #8a726b;
+  --color-text-selected: #526850;
+  --color-bg-selected: rgba(206, 231, 200, 0.3);
+  --color-bg-selected-soft: rgba(206, 231, 200, 0.2);
+  --color-bg-avatar-dark: #77746d;
+  --shadow-filters: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
   /* ===== SHADOWS ===== */
   --shadow-card: 0 4px 20px 0 rgba(45, 45, 45, 0.04);
   --shadow-header: 0 4px 20px 0 rgba(45, 45, 45, 0.04);

@@ -6,6 +6,9 @@ import Icon from "../Icon/Icon";
 import CatalogCourseCard from "../CatalogCourseCard/CatalogCourseCard";
 import Pagination from "../Pagination/Pagination";
 import styles from "./CoursesCatalog.module.css";
+import { toast } from "react-toastify";
+import instance from "../../lib/axios";
+import { useAuth } from "../../context/AuthContext";
 
 const sortOptions = [
   { value: "studentsCount", label: "Most popular" },
@@ -25,6 +28,12 @@ export default function CoursesCatalog({
   activeSort,
 }) {
   const router = useRouter();
+
+  const { isLoggedIn, isLoading, setCartCount } = useAuth();
+
+  const [cartIds, setCartIds] = useState([]);
+  const [ownedIds, setOwnedIds] = useState([]);
+  const [pendingId, setPendingId] = useState("");
 
   const [category, setCategory] = useState(activeCategory);
   const [search, setSearch] = useState(activeSearch);
@@ -47,6 +56,83 @@ export default function CoursesCatalog({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function loadPurchaseStatus() {
+      if (isLoading) {
+        return;
+      }
+
+      if (!isLoggedIn) {
+        if (!ignore) {
+          setCartIds([]);
+          setOwnedIds([]);
+        }
+        return;
+      }
+
+      try {
+        const [cartResponse, learningResponse] = await Promise.all([
+          instance.get("/cart"),
+          instance.get("/my-learning"),
+        ]);
+
+        if (ignore) {
+          return;
+        }
+
+        setCartIds(cartResponse.data.cart.map((item) => item._id));
+        setOwnedIds(
+          learningResponse.data.enrollments
+            .filter((item) => item.course)
+            .map((item) => item.course._id),
+        );
+        setCartCount(cartResponse.data.cart.length);
+      } catch {
+        if (!ignore) {
+          setCartIds([]);
+          setOwnedIds([]);
+        }
+      }
+    }
+
+    loadPurchaseStatus();
+
+    return () => {
+      ignore = true;
+    };
+  }, [isLoading, isLoggedIn, setCartCount]);
+
+  async function handleAddToCart(courseId) {
+    if (!isLoggedIn) {
+      router.push("/login");
+      return;
+    }
+
+    setPendingId(courseId);
+
+    try {
+      const { data } = await instance.post(`/cart/${courseId}`);
+      setCartCount(data.cartCount);
+      setCartIds((ids) => [...ids, courseId]);
+      toast.success("Course added to cart");
+    } catch (error) {
+      const message = error.response?.data?.message;
+
+      if (message === "Course already in cart") {
+        setCartIds((ids) => [...ids, courseId]);
+      }
+      if (message === "Course already purchased") {
+        setOwnedIds((ids) => [...ids, courseId]);
+      }
+
+      toast.error(message || "Something went wrong. Please try again.");
+    }
+
+    setPendingId("");
+  }
 
   function pushQuery(values) {
     const query = new URLSearchParams();
@@ -255,10 +341,22 @@ export default function CoursesCatalog({
         <h2 className={styles.resultsTitle}>
           Showing {total} <br className={styles.resultsBreak} />
           courses
-        </h2>{" "}
+        </h2>
         <div className={styles.grid}>
           {courses.map((course) => (
-            <CatalogCourseCard key={course._id} course={course} />
+            <CatalogCourseCard
+              key={course._id}
+              course={course}
+              status={
+                ownedIds.includes(course._id)
+                  ? "owned"
+                  : cartIds.includes(course._id)
+                    ? "inCart"
+                    : "default"
+              }
+              isPending={pendingId === course._id}
+              onAddToCart={handleAddToCart}
+            />
           ))}
         </div>
       </div>

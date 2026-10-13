@@ -10,7 +10,12 @@ const badgeClassByLevel = {
   Advanced: "badgeAdvanced",
 };
 
-export default function CatalogCourseCard({ course }) {
+export default function CatalogCourseCard({
+  course,
+  status,
+  isPending,
+  onAddToCart,
+}) {
   const badgeClass = badgeClassByLevel[course.level] || "badgeAdvanced";
 
   return (
@@ -70,9 +75,28 @@ export default function CatalogCourseCard({ course }) {
 
         <div className={styles.footer}>
           <span className={styles.price}>{formatPrice(course.price)}</span>
-          <button type="button" className={styles.cartButton}>
-            Add to cart
-          </button>
+
+          {status === "owned" && (
+            <span className={styles.ownedPill}>Purchased</span>
+          )}
+
+          {status === "inCart" && (
+            <span className={styles.inCartPill}>
+              <Icon name="icon-in-cart" className={styles.pillIcon} />
+              In cart
+            </span>
+          )}
+
+          {status === "default" && (
+            <button
+              type="button"
+              className={styles.cartButton}
+              onClick={() => onAddToCart(course._id)}
+              disabled={isPending}
+            >
+              Add to cart
+            </button>
+          )}
         </div>
       </div>
     </article>

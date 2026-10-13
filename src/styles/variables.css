@@ -69,6 +69,9 @@
   --color-border-card-incart: rgba(157, 62, 29, 0.2);
   --color-border-section: rgba(221, 192, 184, 0.2);
 
+  --color-error-strong: #ba1a1a;
+  --color-bg-image: #eae7e7;
+
   /* ===== SHADOWS ===== */
   --shadow-card: 0 4px 20px 0 rgba(45, 45, 45, 0.04);
   --shadow-header: 0 4px 20px 0 rgba(45, 45, 45, 0.04);

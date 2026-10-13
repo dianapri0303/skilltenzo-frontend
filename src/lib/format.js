@@ -24,3 +24,13 @@ export function getStarIcons(rating) {
   }
   return icons;
 }
+
+export function formatPurchaseDate(enrollmentId) {
+  const seconds = parseInt(enrollmentId.substring(0, 8), 16);
+
+  return new Date(seconds * 1000).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}

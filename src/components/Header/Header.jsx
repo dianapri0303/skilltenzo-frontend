@@ -63,7 +63,9 @@ export default function Header() {
           <div className={styles.right}>
             <Link href="/cart" className={styles.cart} aria-label="Cart">
               <Icon name="icon-cart" width={20} height={20} />
-              {cartCount > 0 && <span className={styles.cartDot} />}
+              {cartCount > 0 && (
+                <span className={styles.cartDot}>{cartCount}</span>
+              )}{" "}
             </Link>
 
             {user ? (

@@ -1,0 +1,383 @@
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 24px 104px;
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.crumb {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--color-text-body);
+}
+
+.crumbCurrent {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--color-text-heading);
+}
+
+.crumbArrow {
+  flex-shrink: 0;
+  width: 5px;
+  height: 8px;
+  color: var(--color-text-body);
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: 75px;
+  margin-top: 48px;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cover {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px 0 rgba(45, 45, 45, 0.04);
+}
+
+.coverImage {
+  object-fit: cover;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.category {
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: var(--color-bg-selected);
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--color-success-dark);
+}
+
+.title {
+  font-family: var(--second-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--color-text-heading);
+}
+
+.description {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--color-text-body);
+}
+
+.instructorBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.instructor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0 12px;
+  border-top: 1px solid var(--color-border-soft);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.instructorAvatar {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  background: var(--color-bg-avatar);
+}
+
+.instructorAvatarImage {
+  object-fit: cover;
+}
+
+.instructorMeta {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.instructorName {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--color-text-heading);
+}
+
+.instructorRole {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 133%;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-body);
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+  padding-top: 5px;
+  list-style: none;
+}
+
+.fact {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 143%;
+  color: var(--color-text-body);
+}
+
+.factValue {
+  font-weight: 700;
+  color: var(--color-text-heading);
+}
+
+.factStar {
+  flex-shrink: 0;
+  width: 20px;
+  height: 19px;
+  color: var(--color-primary);
+}
+
+.factIconClock,
+.factIconGlobe {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+}
+
+.factIconUsers {
+  flex-shrink: 0;
+  width: 13px;
+  height: 10px;
+}
+
+.factIconLevel {
+  flex-shrink: 0;
+  width: 9px;
+  height: 10px;
+}
+
+.features {
+  margin-top: 48px;
+  padding: 32px;
+  background: var(--color-bg-filters);
+}
+
+.featuresInner {
+  display: grid;
+  grid-template-columns: 148px;
+  justify-content: center;
+  gap: 24px;
+  list-style: none;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  min-height: 148px;
+  padding: 24px;
+  border: 1px solid var(--color-border-card);
+  border-radius: 12px;
+  background: var(--color-bg-page);
+}
+
+.featureBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  color: var(--color-icon-dark);
+}
+
+.featureBoxPrimary {
+  background: var(--color-primary-soft);
+}
+
+.featureBoxGreen {
+  background: var(--color-bg-selected);
+}
+
+.featureBoxNeutral {
+  background: var(--color-bg-muted);
+}
+
+.featureIconLifetime {
+  width: 24px;
+  height: 11px;
+}
+
+.featureIconCertificate {
+  width: 24px;
+  height: 24px;
+}
+
+.featureIconDevices {
+  width: 18px;
+  height: 20px;
+}
+
+.featureIconDownload {
+  width: 16px;
+  height: 16px;
+}
+
+.featureLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  text-align: center;
+  color: var(--color-text-heading);
+}
+.about {
+  margin-top: 48px;
+  border-top: 1px solid var(--color-border-section);
+}
+
+.aboutTitle {
+  font-family: var(--second-family);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 130%;
+  color: var(--color-text-heading);
+}
+
+.learnTitle {
+  margin-top: 24px;
+  font-family: var(--second-family);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 140%;
+  color: var(--color-text-heading);
+}
+
+.learnList {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 80px;
+  row-gap: 12px;
+  margin-top: 16.8px;
+  list-style: none;
+}
+
+.learnItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 160%;
+  color: var(--color-text-body);
+}
+
+.learnIcon {
+  flex-shrink: 0;
+  width: 17px;
+  height: 13px;
+  margin-top: 6.3px;
+  color: var(--color-success-dark);
+}
+
+@media (min-width: 768px) {
+  .features {
+    padding: 32px;
+  }
+
+  .featuresInner {
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: stretch;
+    gap: 21.3px;
+  }
+
+  .learnList {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, auto);
+    grid-auto-flow: column;
+  }
+}
+
+@media (min-width: 1440px) {
+  .main {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+
+  .cover {
+    aspect-ratio: 600 / 392;
+  }
+
+  .features {
+    padding: 32px 104px;
+  }
+
+  .featuresInner {
+    gap: 117.33px;
+  }
+
+  .feature {
+    min-height: 168px;
+  }
+
+  .learnItem {
+    gap: 19.72px;
+  }
+}

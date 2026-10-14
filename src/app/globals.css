@@ -129,3 +129,23 @@ button {
   padding-left: var(--section-padding-x);
   padding-right: var(--section-padding-x);
 }
+
+/* ===== TOASTS ===== */
+body .Toastify__toast-container {
+  width: auto;
+  padding: 0;
+}
+
+body .Toastify__toast {
+  min-height: 0;
+  margin-bottom: 16px;
+  padding: 0;
+  border-radius: 8px;
+  box-shadow: none;
+  background: transparent;
+}
+
+body .Toastify__toast-body {
+  margin: 0;
+  padding: 0;
+}

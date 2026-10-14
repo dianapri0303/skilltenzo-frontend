@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import CourseNotFound from "../../../components/CourseNotFound/CourseNotFound";
 import CourseDetails from "../../../components/CourseDetails/CourseDetails";
 
 async function getCourse(slug) {
@@ -33,7 +33,7 @@ export default async function CoursePage({ params }) {
   const course = await getCourse(slug);
 
   if (!course) {
-    notFound();
+    return <CourseNotFound />;
   }
 
   return <CourseDetails course={course} />;

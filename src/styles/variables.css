@@ -79,6 +79,12 @@
   --color-error-border: rgba(186, 26, 26, 0.2);
   --color-error-bg: rgba(255, 218, 214, 0.2);
   --color-error-text: #93000a;
+  --color-toast-success-bar: #4e644c;
+  --color-toast-success-bg: #cee7c8;
+  --color-toast-error-bar: #ba1a1a;
+  --color-toast-error-bg: #ffdad6;
+  --color-toast-info-bar: #5e5c55;
+  --color-toast-info-bg: #e7e2d9;
 
   /* ===== SHADOWS ===== */
   --shadow-card: 0 4px 20px 0 rgba(45, 45, 45, 0.04);

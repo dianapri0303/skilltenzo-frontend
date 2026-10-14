@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Icon from "../Icon/Icon";
+import SkeletonGrid from "../SkeletonCard/SkeletonGrid";
 import instance from "../../lib/axios";
 import { useAuth } from "../../context/AuthContext";
 import { formatPrice } from "../../lib/format";
@@ -124,7 +125,7 @@ export default function CartPage() {
   }
 
   if (isFetching) {
-    return null;
+    return <SkeletonGrid count={2} />;
   }
 
   if (cart.length === 0) {

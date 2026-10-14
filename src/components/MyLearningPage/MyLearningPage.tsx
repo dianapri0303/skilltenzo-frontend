@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import Icon from "../Icon/Icon";
+import SkeletonGrid from "../SkeletonCard/SkeletonGrid";
 import instance from "../../lib/axios";
 import { useAuth } from "../../context/AuthContext";
 import { showToast, showApiError } from "../../lib/notify";
@@ -82,7 +83,7 @@ export default function MyLearningPage() {
   }
 
   if (isFetching) {
-    return null;
+    return <SkeletonGrid count={3} />;
   }
 
   const firstName = user?.name ? user.name.trim().split(/\s+/)[0] : "there";

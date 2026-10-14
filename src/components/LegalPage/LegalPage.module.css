@@ -1,0 +1,14 @@
+.page {
+  min-height: 60vh;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 80px 24px;
+}
+
+.title {
+  font-family: var(--second-family);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 130%;
+  color: var(--color-text-heading);
+}

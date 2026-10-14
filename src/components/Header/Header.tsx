@@ -121,6 +121,20 @@ export default function Header() {
 
                 {isAccountOpen && (
                   <div className={styles.accountMenu}>
+                    <Link
+                      href="/my-learning"
+                      className={styles.menuLink}
+                      onClick={() => setIsAccountOpen(false)}
+                    >
+                      My Learning
+                    </Link>
+                    <Link
+                      href="/settings"
+                      className={styles.menuLink}
+                      onClick={() => setIsAccountOpen(false)}
+                    >
+                      Settings
+                    </Link>
                     <button
                       type="button"
                       className={styles.logoutBtn}
@@ -174,13 +188,24 @@ export default function Header() {
               </Link>
             ))}
             {user ? (
-              <button
-                type="button"
-                onClick={handleLogout}
-                className={styles.mobileLogout}
-              >
-                Log out
-              </button>
+              <>
+                <Link
+                  href="/settings"
+                  onClick={closeMenu}
+                  className={`${styles.mobileNavLink} ${
+                    isActive("/settings") ? styles.mobileNavLinkActive : ""
+                  }`}
+                >
+                  Settings
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className={styles.mobileLogout}
+                >
+                  Log out
+                </button>
+              </>
             ) : (
               <>
                 <Link

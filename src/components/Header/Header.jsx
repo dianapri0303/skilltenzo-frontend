@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import Icon from "../Icon/Icon";
 import { useAuth } from "../../context/AuthContext";
@@ -25,9 +25,12 @@ function getInitials(name) {
 }
 
 export default function Header() {
-  const { user, cartCount } = useAuth();
+  const { user, cartCount, setCartCount, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAccountOpen, setIsAccountOpen] = useState(false);
+  const accountRef = useRef(null);
   const pathname = usePathname();
+  const router = useRouter();
 
   const links = user ? [...publicLinks, ...privateLinks] : publicLinks;
 
@@ -35,6 +38,27 @@ export default function Header() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   const closeMenu = () => setIsMenuOpen(false);
+
+  useEffect(() => {
+    if (!isAccountOpen) return;
+
+    const handleClickOutside = (event) => {
+      if (accountRef.current && !accountRef.current.contains(event.target)) {
+        setIsAccountOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isAccountOpen]);
+
+  const handleLogout = () => {
+    logout();
+    setCartCount(0);
+    setIsAccountOpen(false);
+    setIsMenuOpen(false);
+    router.push("/");
+  };
 
   return (
     <>
@@ -69,21 +93,41 @@ export default function Header() {
             </Link>
 
             {user ? (
-              <div className={styles.account}>
-                {user.avatarUrl ? (
-                  <Image
-                    src={user.avatarUrl}
-                    alt=""
-                    width={40}
-                    height={40}
-                    className={styles.avatar}
-                  />
-                ) : (
-                  <span className={styles.avatarPlaceholder} />
+              <div className={styles.account} ref={accountRef}>
+                <button
+                  type="button"
+                  className={styles.accountBtn}
+                  onClick={() => setIsAccountOpen((prev) => !prev)}
+                  aria-expanded={isAccountOpen}
+                  aria-label="Account menu"
+                >
+                  {user.avatarUrl ? (
+                    <Image
+                      src={user.avatarUrl}
+                      alt=""
+                      width={40}
+                      height={40}
+                      className={styles.avatar}
+                    />
+                  ) : (
+                    <span className={styles.avatarPlaceholder} />
+                  )}
+                  <span className={styles.initials}>
+                    {getInitials(user.name)}
+                  </span>
+                </button>
+
+                {isAccountOpen && (
+                  <div className={styles.accountMenu}>
+                    <button
+                      type="button"
+                      className={styles.logoutBtn}
+                      onClick={handleLogout}
+                    >
+                      Log out
+                    </button>
+                  </div>
                 )}
-                <span className={styles.initials}>
-                  {getInitials(user.name)}
-                </span>
               </div>
             ) : (
               <div className={styles.authButtons}>
@@ -127,7 +171,15 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            {!user && (
+            {user ? (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className={styles.mobileLogout}
+              >
+                Log out
+              </button>
+            ) : (
               <>
                 <Link
                   href="/login"

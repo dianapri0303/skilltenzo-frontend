@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Icon from "../Icon/Icon";
 import CourseCard from "../CourseCard/CourseCard";
+import LoadError from "../LoadError/LoadError";
 import styles from "./TrendingSection.module.css";
 
 async function getTrendingCourses() {
@@ -10,19 +11,19 @@ async function getTrendingCourses() {
       { next: { revalidate: 300 } },
     );
 
-    if (!res.ok) return [];
+    if (!res.ok) return null;
 
     const data = await res.json();
-    return Array.isArray(data) ? data : [];
+    return Array.isArray(data) ? data : null;
   } catch {
-    return [];
+    return null;
   }
 }
 
 export default async function TrendingSection() {
   const courses = await getTrendingCourses();
 
-  if (courses.length === 0) return null;
+  if (courses && courses.length === 0) return null;
 
   return (
     <section className={styles.section}>
@@ -41,15 +42,25 @@ export default async function TrendingSection() {
           </Link>
         </div>
 
-        <div className={styles.grid}>
-          {courses.map((course) => (
-            <CourseCard key={course._id} course={course} />
-          ))}
-        </div>
+        {courses ? (
+          <>
+            <div className={styles.grid}>
+              {courses.map((course) => (
+                <CourseCard key={course._id} course={course} />
+              ))}
+            </div>
 
-        <Link href="/courses" className={styles.allButton}>
-          See all courses
-        </Link>
+            <Link href="/courses" className={styles.allButton}>
+              See all courses
+            </Link>
+          </>
+        ) : (
+          <LoadError
+            titleLines={["Couldn't load trending", "courses."]}
+            textLines={["Try refreshing the page."]}
+            buttonLabel="Reload"
+          />
+        )}
       </div>
     </section>
   );

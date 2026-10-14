@@ -1,6 +1,7 @@
+import type { Metadata } from "next";
 import LoginPage from "../../components/LoginPage/LoginPage";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Log In | Skilltenzo",
   description: "Log in to your Skilltenzo account.",
 };

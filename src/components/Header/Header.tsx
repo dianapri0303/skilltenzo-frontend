@@ -15,7 +15,7 @@ const publicLinks = [
 
 const privateLinks = [{ href: "/my-learning", label: "My Learning" }];
 
-function getInitials(name) {
+function getInitials(name?: string): string {
   if (!name) return "";
   return name
     .trim()
@@ -28,13 +28,13 @@ export default function Header() {
   const { user, cartCount, setCartCount, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
-  const accountRef = useRef(null);
+  const accountRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const router = useRouter();
 
   const links = user ? [...publicLinks, ...privateLinks] : publicLinks;
 
-  const isActive = (href) =>
+  const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   const closeMenu = () => setIsMenuOpen(false);
@@ -42,8 +42,10 @@ export default function Header() {
   useEffect(() => {
     if (!isAccountOpen) return;
 
-    const handleClickOutside = (event) => {
-      if (accountRef.current && !accountRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
+      if (accountRef.current && !accountRef.current.contains(target)) {
         setIsAccountOpen(false);
       }
     };

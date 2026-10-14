@@ -1,13 +1,18 @@
 "use client";
 
 import { useEffect } from "react";
+import type { MouseEvent as ReactMouseEvent } from "react";
 import Link from "next/link";
 import Icon from "../Icon/Icon";
 import styles from "./SignInModal.module.css";
 
-export default function SignInModal({ onClose }) {
+interface SignInModalProps {
+  onClose: () => void;
+}
+
+export default function SignInModal({ onClose }: SignInModalProps) {
   useEffect(() => {
-    function handleKeyDown(event) {
+    function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         onClose();
       }
@@ -22,7 +27,7 @@ export default function SignInModal({ onClose }) {
     };
   }, [onClose]);
 
-  function handleOverlayClick(event) {
+  function handleOverlayClick(event: ReactMouseEvent<HTMLDivElement>) {
     if (event.target === event.currentTarget) {
       onClose();
     }

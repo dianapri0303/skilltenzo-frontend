@@ -1,10 +1,11 @@
 import axios from "axios";
+import type { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 
-instance.interceptors.request.use((config) => {
+instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
@@ -17,7 +18,7 @@ instance.interceptors.request.use((config) => {
 
 instance.interceptors.response.use(
   (response) => response,
-  (error) => {
+  (error: AxiosError) => {
     if (
       error.response?.status === 401 &&
       typeof window !== "undefined" &&

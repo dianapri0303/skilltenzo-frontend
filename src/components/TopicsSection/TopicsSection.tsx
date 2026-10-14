@@ -1,8 +1,16 @@
 import Link from "next/link";
 import Icon from "../Icon/Icon";
+import type { Category } from "../../types";
 import styles from "./TopicsSection.module.css";
 
-const topicConfig = {
+interface TopicConfig {
+  icon: string;
+  circle: string;
+  width: number;
+  height: number;
+}
+
+const topicConfig: Record<string, TopicConfig> = {
   "creative-writing": {
     icon: "icon-topic-writing",
     circle: "circleOrange",
@@ -35,7 +43,7 @@ const topicConfig = {
   },
 };
 
-const fallbackConfig = {
+const fallbackConfig: TopicConfig = {
   icon: "icon-topic-crafts",
   circle: "circleGrey",
   width: 20,
@@ -44,12 +52,12 @@ const fallbackConfig = {
 
 const topicOrder = Object.keys(topicConfig);
 
-function getOrderIndex(slug) {
+function getOrderIndex(slug: string): number {
   const index = topicOrder.indexOf(slug);
   return index === -1 ? topicOrder.length : index;
 }
 
-async function getCategories() {
+async function getCategories(): Promise<Category[]> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
       next: { revalidate: 3600 },
@@ -57,8 +65,8 @@ async function getCategories() {
 
     if (!res.ok) return [];
 
-    const data = await res.json();
-    return Array.isArray(data) ? data : [];
+    const data: unknown = await res.json();
+    return Array.isArray(data) ? (data as Category[]) : [];
   } catch {
     return [];
   }

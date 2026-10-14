@@ -7,14 +7,23 @@ import {
   formatStudents,
   getStarIcons,
 } from "../../lib/format";
+import type { Course } from "../../types";
 import styles from "./CourseCard.module.css";
 
-const badgeClassByLevel = {
+const badgeClassByLevel: Record<string, string> = {
   Beginner: "badgeBeginner",
   Intermediate: "badgeIntermediate",
 };
 
-export default function CourseCard({ course, variant = "home" }) {
+interface CourseCardProps {
+  course: Course;
+  variant?: "home" | "catalog";
+}
+
+export default function CourseCard({
+  course,
+  variant = "home",
+}: CourseCardProps) {
   const badgeClass = badgeClassByLevel[course.level] || "badgeAdvanced";
   const starIcons = getStarIcons(course.ratingAverage);
 

@@ -10,6 +10,7 @@ import * as yup from "yup";
 import Icon from "../Icon/Icon";
 import { useAuth } from "../../context/AuthContext";
 import { showToast, showApiError } from "../../lib/notify";
+import { getErrorMessage } from "../../lib/getErrorMessage";
 import styles from "./LoginPage.module.css";
 
 const schema = yup.object({
@@ -20,6 +21,8 @@ const schema = yup.object({
     .email("Enter a valid email."),
   password: yup.string().trim().required("Enter your password."),
 });
+
+type LoginFormValues = yup.InferType<typeof schema>;
 
 export default function LoginPage() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -36,18 +39,18 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<LoginFormValues>({
     resolver: yupResolver(schema),
     mode: "onTouched",
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: LoginFormValues) => {
     try {
       await login(values);
       showToast("loggedIn");
       router.push("/");
     } catch (error) {
-      showApiError(error.response?.data?.message);
+      showApiError(getErrorMessage(error));
     }
   };
 

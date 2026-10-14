@@ -3,6 +3,7 @@ import Link from "next/link";
 import Icon from "../Icon/Icon";
 import PurchasePanel from "../PurchasePanel/PurchasePanel";
 import { formatHours, formatStudents } from "../../lib/format";
+import type { CourseDetails as CourseDetailsData } from "../../types";
 import styles from "./CourseDetails.module.css";
 
 const features = [
@@ -32,7 +33,11 @@ const features = [
   },
 ];
 
-export default function CourseDetails({ course }) {
+interface CourseDetailsProps {
+  course: CourseDetailsData;
+}
+
+export default function CourseDetails({ course }: CourseDetailsProps) {
   return (
     <section className={styles.page}>
       <nav className={styles.breadcrumbs}>

@@ -12,6 +12,8 @@ import instance from "../../lib/axios";
 import { useAuth } from "../../context/AuthContext";
 import { formatPrice } from "../../lib/format";
 import { showToast, showApiError } from "../../lib/notify";
+import { getErrorMessage } from "../../lib/getErrorMessage";
+import type { CartCourse, CartResponse } from "../../types";
 import styles from "./CartPage.module.css";
 
 const schema = yup.object({
@@ -38,11 +40,13 @@ const schema = yup.object({
     .required("3 digits required"),
 });
 
+type CheckoutFormValues = yup.InferType<typeof schema>;
+
 export default function CartPage() {
   const router = useRouter();
   const { isLoggedIn, isLoading, setCartCount } = useAuth();
 
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState<CartCourse[]>([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [isFetching, setIsFetching] = useState(true);
 
@@ -50,7 +54,10 @@ export default function CartPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({ resolver: yupResolver(schema), mode: "onTouched" });
+  } = useForm<CheckoutFormValues>({
+    resolver: yupResolver(schema),
+    mode: "onTouched",
+  });
 
   useEffect(() => {
     let ignore = false;
@@ -66,7 +73,7 @@ export default function CartPage() {
       }
 
       try {
-        const { data } = await instance.get("/cart");
+        const { data } = await instance.get<CartResponse>("/cart");
 
         if (ignore) {
           return;
@@ -90,21 +97,21 @@ export default function CartPage() {
     };
   }, [isLoading, isLoggedIn, router, setCartCount]);
 
-  async function handleRemove(courseId) {
+  async function handleRemove(courseId: string) {
     try {
       await instance.delete(`/cart/${courseId}`);
-      const { data } = await instance.get("/cart");
+      const { data } = await instance.get<CartResponse>("/cart");
 
       setCart(data.cart);
       setTotalAmount(data.totalAmount);
       setCartCount(data.cart.length);
       showToast("courseRemoved");
     } catch (error) {
-      showApiError(error.response?.data?.message);
+      showApiError(getErrorMessage(error));
     }
   }
 
-  async function onSubmit(values) {
+  async function onSubmit(values: CheckoutFormValues) {
     try {
       await instance.post("/orders", values);
 
@@ -112,7 +119,7 @@ export default function CartPage() {
       showToast("welcomeCourses");
       router.push("/my-learning");
     } catch (error) {
-      showApiError(error.response?.data?.message);
+      showApiError(getErrorMessage(error));
     }
   }
 

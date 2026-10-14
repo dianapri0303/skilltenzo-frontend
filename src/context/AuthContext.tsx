@@ -7,17 +7,48 @@ import {
   useEffect,
   useState,
 } from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
 import api from "../lib/axios";
+import type { AuthResponse, SessionResponse } from "../types";
 
-const AuthContext = createContext(null);
+export interface AuthUser {
+  _id?: string;
+  name: string;
+  email?: string;
+  avatarUrl: string;
+}
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+export interface RegisterCredentials {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+interface AuthContextValue {
+  user: AuthUser | null;
+  cartCount: number;
+  setCartCount: Dispatch<SetStateAction<number>>;
+  isLoading: boolean;
+  isLoggedIn: boolean;
+  register: (credentials: RegisterCredentials) => Promise<void>;
+  login: (credentials: LoginCredentials) => Promise<void>;
+  logout: () => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextValue | null>(null);
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [cartCount, setCartCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   const loadSession = useCallback(async () => {
-    const { data } = await api.get("/auth/refresh/session");
+    const { data } = await api.get<SessionResponse>("/auth/refresh/session");
 
     localStorage.setItem("token", data.token);
     setUser({ name: data.name, avatarUrl: data.avatarUrl });
@@ -53,8 +84,11 @@ export function AuthProvider({ children }) {
     };
   }, [loadSession]);
 
-  const register = useCallback(async (credentials) => {
-    const { data } = await api.post("/auth/register", credentials);
+  const register = useCallback(async (credentials: RegisterCredentials) => {
+    const { data } = await api.post<AuthResponse>(
+      "/auth/register",
+      credentials,
+    );
 
     localStorage.setItem("token", data.token);
     setUser(data.user);
@@ -62,8 +96,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = useCallback(
-    async (credentials) => {
-      const { data } = await api.post("/auth/login", credentials);
+    async (credentials: LoginCredentials) => {
+      const { data } = await api.post<AuthResponse>("/auth/login", credentials);
 
       localStorage.setItem("token", data.token);
       setUser(data.user);
@@ -83,7 +117,7 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const value = {
+  const value: AuthContextValue = {
     user,
     cartCount,
     setCartCount,
@@ -97,7 +131,7 @@ export function AuthProvider({ children }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function useAuth() {
+export function useAuth(): AuthContextValue {
   const context = useContext(AuthContext);
 
   if (!context) {

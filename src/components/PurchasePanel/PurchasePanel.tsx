@@ -8,12 +8,24 @@ import instance from "../../lib/axios";
 import { useAuth } from "../../context/AuthContext";
 import { formatPurchaseDate } from "../../lib/format";
 import { showToast, showApiError } from "../../lib/notify";
+import { getErrorMessage } from "../../lib/getErrorMessage";
+import type {
+  CartResponse,
+  CourseDetails,
+  MyLearningResponse,
+} from "../../types";
 import styles from "./PurchasePanel.module.css";
 
-export default function PurchasePanel({ course }) {
+type PanelStatus = "default" | "inCart" | "owned";
+
+interface PurchasePanelProps {
+  course: CourseDetails;
+}
+
+export default function PurchasePanel({ course }: PurchasePanelProps) {
   const { isLoggedIn, isLoading, setCartCount } = useAuth();
 
-  const [status, setStatus] = useState("default");
+  const [status, setStatus] = useState<PanelStatus>("default");
   const [purchasedAt, setPurchasedAt] = useState("");
   const [isChecking, setIsChecking] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
@@ -37,8 +49,8 @@ export default function PurchasePanel({ course }) {
 
       try {
         const [cartResponse, learningResponse] = await Promise.all([
-          instance.get("/cart"),
-          instance.get("/my-learning"),
+          instance.get<CartResponse>("/cart"),
+          instance.get<MyLearningResponse>("/my-learning"),
         ]);
 
         if (ignore) {
@@ -87,7 +99,9 @@ export default function PurchasePanel({ course }) {
     setIsAdding(true);
 
     try {
-      const { data } = await instance.post(`/cart/${course._id}`);
+      const { data } = await instance.post<{ cartCount: number }>(
+        `/cart/${course._id}`,
+      );
       setCartCount(data.cartCount);
       setStatus("inCart");
       showToast(
@@ -95,7 +109,7 @@ export default function PurchasePanel({ course }) {
         `The ${course.title} course is now in your cart.`,
       );
     } catch (error) {
-      const message = error.response?.data?.message;
+      const message = getErrorMessage(error);
 
       if (message === "Course already in cart") {
         setStatus("inCart");

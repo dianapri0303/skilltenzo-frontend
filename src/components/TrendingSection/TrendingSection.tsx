@@ -2,9 +2,10 @@ import Link from "next/link";
 import Icon from "../Icon/Icon";
 import CourseCard from "../CourseCard/CourseCard";
 import LoadError from "../LoadError/LoadError";
+import type { Course } from "../../types";
 import styles from "./TrendingSection.module.css";
 
-async function getTrendingCourses() {
+async function getTrendingCourses(): Promise<Course[] | null> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/courses/trending`,
@@ -13,8 +14,8 @@ async function getTrendingCourses() {
 
     if (!res.ok) return null;
 
-    const data = await res.json();
-    return Array.isArray(data) ? data : null;
+    const data: unknown = await res.json();
+    return Array.isArray(data) ? (data as Course[]) : null;
   } catch {
     return null;
   }

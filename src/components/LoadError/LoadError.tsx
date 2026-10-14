@@ -3,12 +3,19 @@
 import Icon from "../Icon/Icon";
 import styles from "./LoadError.module.css";
 
+interface LoadErrorProps {
+  titleLines: string[];
+  textLines: string[];
+  buttonLabel: string;
+  onButtonClick?: () => void;
+}
+
 export default function LoadError({
   titleLines,
   textLines,
   buttonLabel,
   onButtonClick,
-}) {
+}: LoadErrorProps) {
   function handleClick() {
     if (onButtonClick) {
       onButtonClick();

@@ -3,6 +3,17 @@
 import { toast } from "react-toastify";
 import ToastBody from "../components/ToastBody/ToastBody";
 
+type ToastVariant = "success" | "error" | "info";
+
+interface ToastMessage {
+  variant: ToastVariant;
+  icon: string;
+  iconWidth: number;
+  iconHeight: number;
+  title: string;
+  text: string;
+}
+
 const messages = {
   courseAdded: {
     variant: "success",
@@ -108,14 +119,12 @@ const messages = {
     title: "This course is already in your cart",
     text: "Visit checkout to complete your purchase.",
   },
-};
+} satisfies Record<string, ToastMessage>;
 
-export function showToast(key, textOverride) {
+export type ToastKey = keyof typeof messages;
+
+export function showToast(key: ToastKey, textOverride?: string): void {
   const message = messages[key];
-
-  if (!message) {
-    return;
-  }
 
   toast(
     ({ closeToast }) => (
@@ -133,7 +142,7 @@ export function showToast(key, textOverride) {
   );
 }
 
-export function showApiError(message) {
+export function showApiError(message?: string): void {
   if (message === "Email is already registered") {
     showToast("emailRegistered");
     return;

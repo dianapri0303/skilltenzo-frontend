@@ -1,17 +1,35 @@
+import type { Metadata } from "next";
 import CoursesCatalog from "../../components/CoursesCatalog/CoursesCatalog";
+import type { Category, CoursesResponse } from "../../types";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Courses | Skilltenzo",
   description: "Practical skills, taught by people who use them daily.",
 };
 
-export default async function Courses({ searchParams }) {
+type SearchParams = Record<string, string | string[] | undefined>;
+
+function getParam(value: string | string[] | undefined, fallback = ""): string {
+  if (typeof value === "string") {
+    return value || fallback;
+  }
+  if (Array.isArray(value)) {
+    return value[0] || fallback;
+  }
+  return fallback;
+}
+
+export default async function Courses({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
   const params = await searchParams;
 
-  const category = params.category || "";
-  const search = params.search || "";
-  const sort = params.sort || "studentsCount";
-  const page = params.page || "1";
+  const category = getParam(params.category);
+  const search = getParam(params.search);
+  const sort = getParam(params.sort, "studentsCount");
+  const page = getParam(params.page, "1");
 
   const query = new URLSearchParams({ sort, page, limit: "12" });
 
@@ -22,8 +40,8 @@ export default async function Courses({ searchParams }) {
     query.set("search", search);
   }
 
-  let data = null;
-  let categories = [];
+  let data: CoursesResponse | null = null;
+  let categories: Category[] = [];
 
   try {
     const [coursesResponse, categoriesResponse] = await Promise.all([
@@ -36,10 +54,10 @@ export default async function Courses({ searchParams }) {
     ]);
 
     if (coursesResponse.ok) {
-      data = await coursesResponse.json();
+      data = (await coursesResponse.json()) as CoursesResponse;
     }
     if (categoriesResponse.ok) {
-      categories = await categoriesResponse.json();
+      categories = (await categoriesResponse.json()) as Category[];
     }
   } catch {
     data = null;
@@ -63,6 +81,7 @@ export default async function Courses({ searchParams }) {
 
   return (
     <CoursesCatalog
+      hasError={false}
       courses={data.courses}
       total={data.total}
       page={data.page}

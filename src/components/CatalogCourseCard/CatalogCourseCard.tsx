@@ -2,20 +2,30 @@ import Image from "next/image";
 import Link from "next/link";
 import Icon from "../Icon/Icon";
 import { formatHours, formatStudents, formatPrice } from "../../lib/format";
+import type { Course } from "../../types";
 import styles from "./CatalogCourseCard.module.css";
 
-const badgeClassByLevel = {
+const badgeClassByLevel: Record<string, string> = {
   Beginner: "badgeBeginner",
   Intermediate: "badgeIntermediate",
   Advanced: "badgeAdvanced",
 };
+
+export type CardStatus = "default" | "inCart" | "owned";
+
+interface CatalogCourseCardProps {
+  course: Course;
+  status: CardStatus;
+  isPending: boolean;
+  onAddToCart: (course: Course) => void;
+}
 
 export default function CatalogCourseCard({
   course,
   status,
   isPending,
   onAddToCart,
-}) {
+}: CatalogCourseCardProps) {
   const badgeClass = badgeClassByLevel[course.level] || "badgeAdvanced";
 
   return (

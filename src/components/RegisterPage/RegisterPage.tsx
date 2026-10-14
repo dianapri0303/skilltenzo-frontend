@@ -10,6 +10,7 @@ import * as yup from "yup";
 import Icon from "../Icon/Icon";
 import { useAuth } from "../../context/AuthContext";
 import { showToast, showApiError } from "../../lib/notify";
+import { getErrorMessage } from "../../lib/getErrorMessage";
 import styles from "./RegisterPage.module.css";
 
 const schema = yup.object({
@@ -31,6 +32,8 @@ const schema = yup.object({
     .min(8, "Password must be at least 8 characters long"),
 });
 
+type RegisterFormValues = yup.InferType<typeof schema>;
+
 export default function RegisterPage() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { register: registerUser, isLoggedIn, isLoading } = useAuth();
@@ -46,18 +49,18 @@ export default function RegisterPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<RegisterFormValues>({
     resolver: yupResolver(schema),
     mode: "onTouched",
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: RegisterFormValues) => {
     try {
       await registerUser(values);
       showToast("accountCreated");
       router.push("/");
     } catch (error) {
-      showApiError(error.response?.data?.message);
+      showApiError(getErrorMessage(error));
     }
   };
 

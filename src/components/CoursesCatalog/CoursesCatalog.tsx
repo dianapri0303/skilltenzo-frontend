@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Icon from "../Icon/Icon";
 import CatalogCourseCard from "../CatalogCourseCard/CatalogCourseCard";
@@ -12,6 +13,13 @@ import styles from "./CoursesCatalog.module.css";
 import instance from "../../lib/axios";
 import { useAuth } from "../../context/AuthContext";
 import { showToast, showApiError } from "../../lib/notify";
+import { getErrorMessage } from "../../lib/getErrorMessage";
+import type {
+  CartResponse,
+  Category,
+  Course,
+  MyLearningResponse,
+} from "../../types";
 
 const sortOptions = [
   { value: "studentsCount", label: "Most popular" },
@@ -19,6 +27,25 @@ const sortOptions = [
   { value: "price_asc", label: "Price: low to high" },
   { value: "price_desc", label: "Price: high to low" },
 ];
+
+interface QueryValues {
+  category?: string;
+  search?: string;
+  sort?: string;
+  page?: number;
+}
+
+interface CoursesCatalogProps {
+  courses: Course[];
+  total: number;
+  page: number;
+  totalPages: number;
+  categories: Category[];
+  activeCategory: string;
+  activeSearch: string;
+  activeSort: string;
+  hasError: boolean;
+}
 
 export default function CoursesCatalog({
   courses,
@@ -30,13 +57,13 @@ export default function CoursesCatalog({
   activeSearch,
   activeSort,
   hasError,
-}) {
+}: CoursesCatalogProps) {
   const router = useRouter();
 
   const { isLoggedIn, isLoading, setCartCount } = useAuth();
 
-  const [cartIds, setCartIds] = useState([]);
-  const [ownedIds, setOwnedIds] = useState([]);
+  const [cartIds, setCartIds] = useState<string[]>([]);
+  const [ownedIds, setOwnedIds] = useState<string[]>([]);
   const [pendingId, setPendingId] = useState("");
   const [isSignInOpen, setIsSignInOpen] = useState(false);
 
@@ -45,15 +72,17 @@ export default function CoursesCatalog({
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
 
-  const categoryRef = useRef(null);
-  const sortRef = useRef(null);
+  const categoryRef = useRef<HTMLDivElement>(null);
+  const sortRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (categoryRef.current && !categoryRef.current.contains(event.target)) {
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node;
+
+      if (categoryRef.current && !categoryRef.current.contains(target)) {
         setIsCategoryOpen(false);
       }
-      if (sortRef.current && !sortRef.current.contains(event.target)) {
+      if (sortRef.current && !sortRef.current.contains(target)) {
         setIsSortOpen(false);
       }
     }
@@ -80,8 +109,8 @@ export default function CoursesCatalog({
 
       try {
         const [cartResponse, learningResponse] = await Promise.all([
-          instance.get("/cart"),
-          instance.get("/my-learning"),
+          instance.get<CartResponse>("/cart"),
+          instance.get<MyLearningResponse>("/my-learning"),
         ]);
 
         if (ignore) {
@@ -110,7 +139,7 @@ export default function CoursesCatalog({
     };
   }, [isLoading, isLoggedIn, setCartCount]);
 
-  async function handleAddToCart(course) {
+  async function handleAddToCart(course: Course) {
     if (!isLoggedIn) {
       setIsSignInOpen(true);
       return;
@@ -119,7 +148,9 @@ export default function CoursesCatalog({
     setPendingId(course._id);
 
     try {
-      const { data } = await instance.post(`/cart/${course._id}`);
+      const { data } = await instance.post<{ cartCount: number }>(
+        `/cart/${course._id}`,
+      );
       setCartCount(data.cartCount);
       setCartIds((ids) => [...ids, course._id]);
       showToast(
@@ -127,7 +158,7 @@ export default function CoursesCatalog({
         `The ${course.title} course is now in your cart.`,
       );
     } catch (error) {
-      const message = error.response?.data?.message;
+      const message = getErrorMessage(error);
 
       if (message === "Course already in cart") {
         setCartIds((ids) => [...ids, course._id]);
@@ -142,7 +173,7 @@ export default function CoursesCatalog({
     setPendingId("");
   }
 
-  function pushQuery(values) {
+  function pushQuery(values: QueryValues) {
     const query = new URLSearchParams();
 
     if (values.category) {
@@ -162,7 +193,7 @@ export default function CoursesCatalog({
     router.push(queryString ? `/courses?${queryString}` : "/courses");
   }
 
-  function handleSubmit(event) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     pushQuery({ category, search, sort: activeSort, page: 1 });
   }
@@ -174,12 +205,12 @@ export default function CoursesCatalog({
     pushQuery({});
   }
 
-  function handleSelectCategory(slug) {
+  function handleSelectCategory(slug: string) {
     setCategory(slug);
     setIsCategoryOpen(false);
   }
 
-  function handleSelectSort(value) {
+  function handleSelectSort(value: string) {
     setIsSortOpen(false);
     pushQuery({
       category: activeCategory,
@@ -189,7 +220,7 @@ export default function CoursesCatalog({
     });
   }
 
-  function handleChangePage(value) {
+  function handleChangePage(value: number) {
     pushQuery({
       category: activeCategory,
       search: activeSearch,

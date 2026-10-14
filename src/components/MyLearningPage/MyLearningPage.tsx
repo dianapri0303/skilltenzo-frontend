@@ -8,16 +8,20 @@ import Icon from "../Icon/Icon";
 import instance from "../../lib/axios";
 import { useAuth } from "../../context/AuthContext";
 import { showToast, showApiError } from "../../lib/notify";
+import { getErrorMessage } from "../../lib/getErrorMessage";
+import type { Enrollment, MyLearningResponse } from "../../types";
 import styles from "./MyLearningPage.module.css";
+
+type LearningTab = "in_progress" | "completed";
 
 export default function MyLearningPage() {
   const router = useRouter();
   const { user, isLoggedIn, isLoading } = useAuth();
 
-  const [enrollments, setEnrollments] = useState([]);
+  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [inProgressCount, setInProgressCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
-  const [activeTab, setActiveTab] = useState("in_progress");
+  const [activeTab, setActiveTab] = useState<LearningTab>("in_progress");
   const [isFetching, setIsFetching] = useState(true);
   const [pendingId, setPendingId] = useState("");
 
@@ -35,7 +39,7 @@ export default function MyLearningPage() {
       }
 
       try {
-        const { data } = await instance.get("/my-learning");
+        const { data } = await instance.get<MyLearningResponse>("/my-learning");
 
         if (ignore) {
           return;
@@ -59,19 +63,19 @@ export default function MyLearningPage() {
     };
   }, [isLoading, isLoggedIn, router]);
 
-  async function handleComplete(courseId) {
+  async function handleComplete(courseId: string) {
     setPendingId(courseId);
 
     try {
       await instance.patch(`/my-learning/${courseId}/complete`);
-      const { data } = await instance.get("/my-learning");
+      const { data } = await instance.get<MyLearningResponse>("/my-learning");
 
       setEnrollments(data.enrollments);
       setInProgressCount(data.inProgressCount);
       setCompletedCount(data.completedCount);
       showToast("courseCompleted");
     } catch (error) {
-      showApiError(error.response?.data?.message);
+      showApiError(getErrorMessage(error));
     }
 
     setPendingId("");

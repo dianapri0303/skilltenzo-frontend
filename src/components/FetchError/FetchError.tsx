@@ -3,7 +3,17 @@
 import Icon from "../Icon/Icon";
 import styles from "./FetchError.module.css";
 
-export default function FetchError({ titleLines, buttonLabel, onButtonClick }) {
+interface FetchErrorProps {
+  titleLines: string[];
+  buttonLabel: string;
+  onButtonClick?: () => void;
+}
+
+export default function FetchError({
+  titleLines,
+  buttonLabel,
+  onButtonClick,
+}: FetchErrorProps) {
   function handleClick() {
     if (onButtonClick) {
       onButtonClick();

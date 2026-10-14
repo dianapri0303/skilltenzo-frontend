@@ -3,7 +3,11 @@
 import Icon from "../Icon/Icon";
 import styles from "./ServerErrorPage.module.css";
 
-export default function ServerErrorPage({ onReset }) {
+interface ServerErrorPageProps {
+  onReset: () => void;
+}
+
+export default function ServerErrorPage({ onReset }: ServerErrorPageProps) {
   return (
     <section className={styles.page}>
       <div className={styles.inner}>

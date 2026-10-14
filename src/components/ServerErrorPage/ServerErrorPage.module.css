@@ -1,0 +1,91 @@
+.page {
+  display: flex;
+  justify-content: center;
+  padding: 80px 24px;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 576px;
+  padding-top: 12.83px;
+}
+
+.illustration {
+  margin-bottom: 35.17px;
+}
+
+.image {
+  width: 256px;
+  height: 256px;
+}
+
+.title {
+  font-family: var(--second-family);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 130%;
+  text-align: center;
+  color: var(--color-text-heading);
+}
+
+.subtitle {
+  margin-top: 11.59px;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 160%;
+  text-align: center;
+  color: var(--color-text-body);
+}
+
+.breakMobile {
+  display: inline;
+}
+
+.breakDesktop {
+  display: none;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  width: 174px;
+  height: 48px;
+  margin-top: 47.82px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px 0 rgba(45, 45, 45, 0.04);
+  background: var(--color-primary);
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  text-align: center;
+  color: var(--color-text-white);
+}
+
+.button:hover {
+  background: var(--color-primary-hover);
+}
+
+.buttonIcon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 17px;
+}
+
+@media (min-width: 768px) {
+  .breakMobile {
+    display: none;
+  }
+
+  .breakDesktop {
+    display: inline;
+  }
+}

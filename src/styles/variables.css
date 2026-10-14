@@ -74,6 +74,11 @@
 
   --color-bg-icon-progress: rgba(157, 62, 29, 0.1);
   --color-bg-empty: rgba(246, 243, 242, 0.3);
+  --color-bg-circle: #e4e2e1;
+
+  --color-error-border: rgba(186, 26, 26, 0.2);
+  --color-error-bg: rgba(255, 218, 214, 0.2);
+  --color-error-text: #93000a;
 
   /* ===== SHADOWS ===== */
   --shadow-card: 0 4px 20px 0 rgba(45, 45, 45, 0.04);

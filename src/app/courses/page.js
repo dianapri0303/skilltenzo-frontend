@@ -22,17 +22,44 @@ export default async function Courses({ searchParams }) {
     query.set("search", search);
   }
 
-  const [coursesResponse, categoriesResponse] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/courses?${query.toString()}`, {
-      next: { revalidate: 60 },
-    }),
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
-      next: { revalidate: 3600 },
-    }),
-  ]);
+  let data = null;
+  let categories = [];
 
-  const data = await coursesResponse.json();
-  const categories = await categoriesResponse.json();
+  try {
+    const [coursesResponse, categoriesResponse] = await Promise.all([
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/courses?${query.toString()}`, {
+        next: { revalidate: 60 },
+      }),
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
+        next: { revalidate: 3600 },
+      }),
+    ]);
+
+    if (coursesResponse.ok) {
+      data = await coursesResponse.json();
+    }
+    if (categoriesResponse.ok) {
+      categories = await categoriesResponse.json();
+    }
+  } catch {
+    data = null;
+  }
+
+  if (!data) {
+    return (
+      <CoursesCatalog
+        hasError
+        courses={[]}
+        total={0}
+        page={1}
+        totalPages={0}
+        categories={[]}
+        activeCategory=""
+        activeSearch=""
+        activeSort="studentsCount"
+      />
+    );
+  }
 
   return (
     <CoursesCatalog

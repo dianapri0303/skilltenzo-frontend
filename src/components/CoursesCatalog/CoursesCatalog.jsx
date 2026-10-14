@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Icon from "../Icon/Icon";
 import CatalogCourseCard from "../CatalogCourseCard/CatalogCourseCard";
+import FetchError from "../FetchError/FetchError";
+import LoadError from "../LoadError/LoadError";
+import SignInModal from "../SignInModal/SignInModal";
 import Pagination from "../Pagination/Pagination";
 import styles from "./CoursesCatalog.module.css";
 import { toast } from "react-toastify";
@@ -26,6 +29,7 @@ export default function CoursesCatalog({
   activeCategory,
   activeSearch,
   activeSort,
+  hasError,
 }) {
   const router = useRouter();
 
@@ -34,6 +38,7 @@ export default function CoursesCatalog({
   const [cartIds, setCartIds] = useState([]);
   const [ownedIds, setOwnedIds] = useState([]);
   const [pendingId, setPendingId] = useState("");
+  const [isSignInOpen, setIsSignInOpen] = useState(false);
 
   const [category, setCategory] = useState(activeCategory);
   const [search, setSearch] = useState(activeSearch);
@@ -107,7 +112,7 @@ export default function CoursesCatalog({
 
   async function handleAddToCart(courseId) {
     if (!isLoggedIn) {
-      router.push("/login");
+      setIsSignInOpen(true);
       return;
     }
 
@@ -196,6 +201,55 @@ export default function CoursesCatalog({
   const sortLabel =
     sortOptions.find((item) => item.value === activeSort)?.label ||
     "Most popular";
+
+  if (hasError) {
+    return (
+      <section className={`${styles.page} ${styles.pageEmpty}`}>
+        <div className={styles.heading}>
+          <h1 className={styles.title}>Courses</h1>
+          <p className={styles.subtitle}>
+            Practical skills, taught by people who use them daily.
+          </p>
+        </div>
+
+        <div className={styles.emptyState}>
+          <FetchError
+            titleLines={[
+              "We couldn't load the courses.",
+              "Please refresh the page.",
+            ]}
+            buttonLabel="Try again"
+          />
+        </div>
+      </section>
+    );
+  }
+
+  if (total === 0) {
+    return (
+      <section className={`${styles.page} ${styles.pageEmpty}`}>
+        <div className={styles.heading}>
+          <h1 className={styles.title}>Courses</h1>
+          <p className={styles.subtitle}>
+            Practical skills, taught by people who use them daily.
+          </p>
+        </div>
+
+        <div className={styles.emptyState}>
+          <LoadError
+            titleLines={["Nothing was found for", "your request"]}
+            textLines={[
+              "Try a different keyword",
+              "or clear your filters to",
+              "see all courses.",
+            ]}
+            buttonLabel="Clear filters"
+            onButtonClick={handleClear}
+          />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className={styles.page}>
@@ -368,6 +422,8 @@ export default function CoursesCatalog({
           onChange={handleChangePage}
         />
       </div>
+
+      {isSignInOpen && <SignInModal onClose={() => setIsSignInOpen(false)} />}
     </section>
   );
 }

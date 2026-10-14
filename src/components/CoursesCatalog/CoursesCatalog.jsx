@@ -9,9 +9,9 @@ import LoadError from "../LoadError/LoadError";
 import SignInModal from "../SignInModal/SignInModal";
 import Pagination from "../Pagination/Pagination";
 import styles from "./CoursesCatalog.module.css";
-import { toast } from "react-toastify";
 import instance from "../../lib/axios";
 import { useAuth } from "../../context/AuthContext";
+import { showToast, showApiError } from "../../lib/notify";
 
 const sortOptions = [
   { value: "studentsCount", label: "Most popular" },
@@ -110,30 +110,33 @@ export default function CoursesCatalog({
     };
   }, [isLoading, isLoggedIn, setCartCount]);
 
-  async function handleAddToCart(courseId) {
+  async function handleAddToCart(course) {
     if (!isLoggedIn) {
       setIsSignInOpen(true);
       return;
     }
 
-    setPendingId(courseId);
+    setPendingId(course._id);
 
     try {
-      const { data } = await instance.post(`/cart/${courseId}`);
+      const { data } = await instance.post(`/cart/${course._id}`);
       setCartCount(data.cartCount);
-      setCartIds((ids) => [...ids, courseId]);
-      toast.success("Course added to cart");
+      setCartIds((ids) => [...ids, course._id]);
+      showToast(
+        "courseAdded",
+        `The ${course.title} course is now in your cart.`,
+      );
     } catch (error) {
       const message = error.response?.data?.message;
 
       if (message === "Course already in cart") {
-        setCartIds((ids) => [...ids, courseId]);
+        setCartIds((ids) => [...ids, course._id]);
       }
       if (message === "Course already purchased") {
-        setOwnedIds((ids) => [...ids, courseId]);
+        setOwnedIds((ids) => [...ids, course._id]);
       }
 
-      toast.error(message || "Something went wrong. Please try again.");
+      showApiError(message);
     }
 
     setPendingId("");

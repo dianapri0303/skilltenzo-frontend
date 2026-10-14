@@ -91,7 +91,7 @@ export default function CatalogCourseCard({
             <button
               type="button"
               className={styles.cartButton}
-              onClick={() => onAddToCart(course._id)}
+              onClick={() => onAddToCart(course)}
               disabled={isPending}
             >
               Add to cart

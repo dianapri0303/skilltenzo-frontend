@@ -7,11 +7,11 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { toast } from "react-toastify";
 import Icon from "../Icon/Icon";
 import instance from "../../lib/axios";
 import { useAuth } from "../../context/AuthContext";
 import { formatPrice } from "../../lib/format";
+import { showToast, showApiError } from "../../lib/notify";
 import styles from "./CartPage.module.css";
 
 const schema = yup.object({
@@ -98,12 +98,9 @@ export default function CartPage() {
       setCart(data.cart);
       setTotalAmount(data.totalAmount);
       setCartCount(data.cart.length);
-      toast.success("Course removed from cart");
+      showToast("courseRemoved");
     } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          "Something went wrong. Please try again.",
-      );
+      showApiError(error.response?.data?.message);
     }
   }
 
@@ -112,12 +109,10 @@ export default function CartPage() {
       await instance.post("/orders", values);
 
       setCartCount(0);
-      toast.success("Payment successful. Your courses are ready.");
+      showToast("welcomeCourses");
       router.push("/my-learning");
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Payment failed. Please try again",
-      );
+      showApiError(error.response?.data?.message);
     }
   }
 

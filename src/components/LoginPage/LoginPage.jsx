@@ -1,16 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { toast } from "react-toastify";
 import Icon from "../Icon/Icon";
 import { useAuth } from "../../context/AuthContext";
+import { showToast, showApiError } from "../../lib/notify";
 import styles from "./LoginPage.module.css";
 
 const schema = yup.object({
@@ -26,11 +25,13 @@ export default function LoginPage() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { login, isLoggedIn, isLoading } = useAuth();
   const router = useRouter();
+
   useEffect(() => {
     if (!isLoading && isLoggedIn) {
       router.replace("/");
     }
   }, [isLoading, isLoggedIn, router]);
+
   const {
     register,
     handleSubmit,
@@ -43,12 +44,10 @@ export default function LoginPage() {
   const onSubmit = async (values) => {
     try {
       await login(values);
-      toast.success("Logged in successfully");
+      showToast("loggedIn");
       router.push("/");
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Something went wrong. Try again.",
-      );
+      showApiError(error.response?.data?.message);
     }
   };
 

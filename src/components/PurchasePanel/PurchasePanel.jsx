@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { toast } from "react-toastify";
 import Icon from "../Icon/Icon";
 import SignInModal from "../SignInModal/SignInModal";
 import instance from "../../lib/axios";
 import { useAuth } from "../../context/AuthContext";
 import { formatPurchaseDate } from "../../lib/format";
+import { showToast, showApiError } from "../../lib/notify";
 import styles from "./PurchasePanel.module.css";
 
 export default function PurchasePanel({ course }) {
@@ -90,7 +90,10 @@ export default function PurchasePanel({ course }) {
       const { data } = await instance.post(`/cart/${course._id}`);
       setCartCount(data.cartCount);
       setStatus("inCart");
-      toast.success("Course added to cart");
+      showToast(
+        "courseAdded",
+        `The ${course.title} course is now in your cart.`,
+      );
     } catch (error) {
       const message = error.response?.data?.message;
 
@@ -101,7 +104,7 @@ export default function PurchasePanel({ course }) {
         setStatus("owned");
       }
 
-      toast.error(message || "Something went wrong. Please try again.");
+      showApiError(message);
     }
 
     setIsAdding(false);

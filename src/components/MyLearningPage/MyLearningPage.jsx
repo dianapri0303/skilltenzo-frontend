@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { toast } from "react-toastify";
 import Icon from "../Icon/Icon";
 import instance from "../../lib/axios";
 import { useAuth } from "../../context/AuthContext";
+import { showToast, showApiError } from "../../lib/notify";
 import styles from "./MyLearningPage.module.css";
 
 export default function MyLearningPage() {
@@ -69,12 +69,9 @@ export default function MyLearningPage() {
       setEnrollments(data.enrollments);
       setInProgressCount(data.inProgressCount);
       setCompletedCount(data.completedCount);
-      toast.success("Course marked as completed");
+      showToast("courseCompleted");
     } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          "Something went wrong. Please try again.",
-      );
+      showApiError(error.response?.data?.message);
     }
 
     setPendingId("");

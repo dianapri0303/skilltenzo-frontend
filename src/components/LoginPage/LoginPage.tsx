@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -28,12 +28,14 @@ export default function LoginPage() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { login, isLoggedIn, isLoading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("from") || "/my-learning";
 
   useEffect(() => {
     if (!isLoading && isLoggedIn) {
-      router.replace("/");
+      router.replace(redirectTo);
     }
-  }, [isLoading, isLoggedIn, router]);
+  }, [isLoading, isLoggedIn, redirectTo, router]);
 
   const {
     register,
@@ -48,7 +50,7 @@ export default function LoginPage() {
     try {
       await login(values);
       showToast("loggedIn");
-      router.push("/");
+      router.push(redirectTo);
     } catch (error) {
       showApiError(getErrorMessage(error));
     }

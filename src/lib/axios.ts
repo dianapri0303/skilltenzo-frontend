@@ -25,6 +25,7 @@ instance.interceptors.response.use(
       window.location.pathname !== "/login"
     ) {
       localStorage.removeItem("token");
+      document.cookie = "token=; path=/; max-age=0; samesite=lax";
       // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.href = "/login";
     }

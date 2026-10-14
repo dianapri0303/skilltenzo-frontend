@@ -58,7 +58,7 @@ export default function RegisterPage() {
     try {
       await registerUser(values);
       showToast("accountCreated");
-      router.push("/");
+      router.push("/courses");
     } catch (error) {
       showApiError(getErrorMessage(error));
     }

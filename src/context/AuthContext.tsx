@@ -42,6 +42,16 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+function saveToken(token: string) {
+  localStorage.setItem("token", token);
+  document.cookie = `token=${token}; path=/; max-age=604800; samesite=lax`;
+}
+
+function clearToken() {
+  localStorage.removeItem("token");
+  document.cookie = "token=; path=/; max-age=0; samesite=lax";
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [cartCount, setCartCount] = useState(0);
@@ -50,7 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loadSession = useCallback(async () => {
     const { data } = await api.get<SessionResponse>("/auth/refresh/session");
 
-    localStorage.setItem("token", data.token);
+    saveToken(data.token);
     setUser({ name: data.name, avatarUrl: data.avatarUrl });
     setCartCount(data.cartCount);
   }, []);
@@ -64,7 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           await loadSession();
         }
       } catch {
-        localStorage.removeItem("token");
+        clearToken();
 
         if (!ignore) {
           setUser(null);
@@ -90,7 +100,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       credentials,
     );
 
-    localStorage.setItem("token", data.token);
+    saveToken(data.token);
     setUser(data.user);
     setCartCount(0);
   }, []);
@@ -99,7 +109,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async (credentials: LoginCredentials) => {
       const { data } = await api.post<AuthResponse>("/auth/login", credentials);
 
-      localStorage.setItem("token", data.token);
+      saveToken(data.token);
       setUser(data.user);
 
       await loadSession();
@@ -111,7 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await api.post("/auth/logout");
     } finally {
-      localStorage.removeItem("token");
+      clearToken();
       setUser(null);
       setCartCount(0);
     }

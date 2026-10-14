@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Icon from "../Icon/Icon";
 import styles from "./SignInModal.module.css";
 
@@ -11,6 +12,8 @@ interface SignInModalProps {
 }
 
 export default function SignInModal({ onClose }: SignInModalProps) {
+  const pathname = usePathname();
+
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -61,7 +64,7 @@ export default function SignInModal({ onClose }: SignInModalProps) {
         </div>
 
         <div className={styles.actions}>
-          <Link href="/login" className={styles.loginButton}>
+          <Link href={`/login?from=${pathname}`} className={styles.loginButton}>
             Log in
           </Link>
           <Link href="/register" className={styles.signupButton}>

@@ -1,23 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import Icon from "../Icon/Icon";
+import SignInModal from "../SignInModal/SignInModal";
 import instance from "../../lib/axios";
 import { useAuth } from "../../context/AuthContext";
 import { formatPurchaseDate } from "../../lib/format";
 import styles from "./PurchasePanel.module.css";
 
 export default function PurchasePanel({ course }) {
-  const router = useRouter();
   const { isLoggedIn, isLoading, setCartCount } = useAuth();
 
   const [status, setStatus] = useState("default");
   const [purchasedAt, setPurchasedAt] = useState("");
   const [isChecking, setIsChecking] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
+  const [isSignInOpen, setIsSignInOpen] = useState(false);
 
   useEffect(() => {
     let ignore = false;
@@ -80,7 +80,7 @@ export default function PurchasePanel({ course }) {
 
   async function handleAddToCart() {
     if (!isLoggedIn) {
-      router.push("/login");
+      setIsSignInOpen(true);
       return;
     }
 
@@ -158,41 +158,48 @@ export default function PurchasePanel({ course }) {
   }
 
   return (
-    <aside className={styles.panel}>
-      <div className={styles.priceBlock}>
-        <p className={styles.price}>${course.price.toFixed(2)}</p>
-        <div>
-          <p className={styles.priceNote}>One-time payment</p>
-          <p className={styles.priceNote}>No subscription</p>
+    <>
+      <aside className={styles.panel}>
+        <div className={styles.priceBlock}>
+          <p className={styles.price}>${course.price.toFixed(2)}</p>
+          <div>
+            <p className={styles.priceNote}>One-time payment</p>
+            <p className={styles.priceNote}>No subscription</p>
+          </div>
         </div>
-      </div>
 
-      <button
-        type="button"
-        className={styles.addButton}
-        onClick={handleAddToCart}
-        disabled={isChecking || isAdding}
-      >
-        Add to cart
-      </button>
+        <button
+          type="button"
+          className={styles.addButton}
+          onClick={handleAddToCart}
+          disabled={isChecking || isAdding}
+        >
+          Add to cart
+        </button>
 
-      <ul className={styles.benefits}>
-        <li className={styles.benefit}>
-          <Icon name="icon-lifetime" className={styles.benefitIconLifetime} />
-          Full lifetime access
-        </li>
-        <li className={styles.benefit}>
-          <Icon name="icon-devices-tv" className={styles.benefitIconDevices} />
-          Access on mobile and TV
-        </li>
-        <li className={styles.benefit}>
-          <Icon
-            name="icon-certificate"
-            className={styles.benefitIconCertificate}
-          />
-          Certificate of completion
-        </li>
-      </ul>
-    </aside>
+        <ul className={styles.benefits}>
+          <li className={styles.benefit}>
+            <Icon name="icon-lifetime" className={styles.benefitIconLifetime} />
+            Full lifetime access
+          </li>
+          <li className={styles.benefit}>
+            <Icon
+              name="icon-devices-tv"
+              className={styles.benefitIconDevices}
+            />
+            Access on mobile and TV
+          </li>
+          <li className={styles.benefit}>
+            <Icon
+              name="icon-certificate"
+              className={styles.benefitIconCertificate}
+            />
+            Certificate of completion
+          </li>
+        </ul>
+      </aside>
+
+      {isSignInOpen && <SignInModal onClose={() => setIsSignInOpen(false)} />}
+    </>
   );
 }

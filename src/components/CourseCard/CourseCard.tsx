@@ -83,7 +83,7 @@ export default function CourseCard({
         <div className={styles.footer}>
           <span className={styles.price}>{formatPrice(course.price)}</span>
           <Link
-            href={`/courses/${course.slug}`}
+            href={`/course/${course.slug}`}
             className={styles.detailsButton}
           >
             Details

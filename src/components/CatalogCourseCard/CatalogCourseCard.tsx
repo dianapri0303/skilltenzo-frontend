@@ -30,7 +30,7 @@ export default function CatalogCourseCard({
 
   return (
     <article className={styles.card}>
-      <Link href={`/courses/${course.slug}`} className={styles.cover}>
+      <Link href={`/course/${course.slug}`} className={styles.cover}>
         <Image
           src={course.coverImageUrl}
           alt={course.title}
@@ -45,7 +45,7 @@ export default function CatalogCourseCard({
 
       <div className={styles.body}>
         <h3 className={styles.title}>
-          <Link href={`/courses/${course.slug}`} className={styles.titleLink}>
+          <Link href={`/course/${course.slug}`} className={styles.titleLink}>
             {course.title}
           </Link>
         </h3>

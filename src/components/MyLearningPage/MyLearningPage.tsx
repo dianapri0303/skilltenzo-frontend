@@ -191,7 +191,7 @@ export default function MyLearningPage() {
           {visible.map((item) => (
             <article key={item._id} className={styles.card}>
               <Link
-                href={`/courses/${item.course.slug}`}
+                href={`/course/${item.course.slug}`}
                 className={styles.cover}
               >
                 <Image

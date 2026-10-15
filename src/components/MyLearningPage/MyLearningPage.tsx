@@ -7,6 +7,7 @@ import Link from "next/link";
 import Icon from "../Icon/Icon";
 import SkeletonGrid from "../SkeletonCard/SkeletonGrid";
 import instance from "../../lib/axios";
+import { formatCompletedDate } from "../../lib/format";
 import { useAuth } from "../../context/AuthContext";
 import { showToast, showApiError } from "../../lib/notify";
 import { getErrorMessage } from "../../lib/getErrorMessage";
@@ -216,7 +217,11 @@ export default function MyLearningPage() {
                 </div>
 
                 {activeTab === "completed" ? (
-                  <span className={styles.cardDone}>Completed</span>
+                  <span className={styles.cardDone}>
+                    {item.completedAt
+                      ? `Completed on ${formatCompletedDate(item.completedAt)}`
+                      : "Completed"}
+                  </span>
                 ) : (
                   <button
                     type="button"

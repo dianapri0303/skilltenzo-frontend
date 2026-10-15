@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Icon from "../Icon/Icon";
 import styles from "./Footer.module.css";
 
@@ -10,6 +13,12 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  if (pathname === "/login" || pathname === "/register") {
+    return null;
+  }
+
   return (
     <footer className={styles.footer}>
       <div className={styles.top}>

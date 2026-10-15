@@ -14,7 +14,7 @@ import { useAuth } from "../../context/AuthContext";
 import { formatPrice } from "../../lib/format";
 import { showToast, showApiError } from "../../lib/notify";
 import { getErrorMessage } from "../../lib/getErrorMessage";
-import type { CartCourse, CartResponse } from "../../types";
+import type { CartCourse, CartResponse, User } from "../../types";
 import styles from "./CartPage.module.css";
 
 const schema = yup.object({
@@ -54,11 +54,14 @@ export default function CartPage() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<CheckoutFormValues>({
     resolver: yupResolver(schema),
     mode: "onTouched",
   });
+
+  const cardNumberField = register("cardNumber");
 
   useEffect(() => {
     let ignore = false;
@@ -97,6 +100,32 @@ export default function CartPage() {
       ignore = true;
     };
   }, [isLoading, isLoggedIn, router, setCartCount]);
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function loadProfile() {
+      if (isLoading || !isLoggedIn) {
+        return;
+      }
+
+      try {
+        const { data } = await instance.get<User>("/users/me");
+
+        if (!ignore) {
+          setValue("email", data.email);
+        }
+      } catch {
+        return;
+      }
+    }
+
+    loadProfile();
+
+    return () => {
+      ignore = true;
+    };
+  }, [isLoading, isLoggedIn, setValue]);
 
   async function handleRemove(courseId: string) {
     try {
@@ -263,7 +292,16 @@ export default function CartPage() {
                   errors.cardNumber ? styles.inputError : ""
                 }`}
                 placeholder="1234 5678 9012 3456"
-                {...register("cardNumber")}
+                {...cardNumberField}
+                onChange={(event) => {
+                  const digits = event.target.value
+                    .replace(/\D/g, "")
+                    .slice(0, 16);
+
+                  event.target.value = digits.match(/.{1,4}/g)?.join(" ") ?? "";
+
+                  cardNumberField.onChange(event);
+                }}
               />
               <Icon name="icon-card" className={styles.cardIcon} />
             </div>

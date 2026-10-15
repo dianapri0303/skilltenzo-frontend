@@ -429,6 +429,7 @@ export default function CoursesCatalog({
         <h2 className={styles.resultsTitle}>
           Showing {total} <br className={styles.resultsBreak} />
           courses
+          {activeSearch ? ` matching "${activeSearch}"` : ""}
         </h2>
         <div className={styles.grid}>
           {courses.map((course) => (
